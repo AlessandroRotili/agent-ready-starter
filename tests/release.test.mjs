@@ -30,8 +30,8 @@ async function temporary(t) {
 test("release package contains the generator runtime but no examples, caches or tests", async (t) => {
   const temporaryRoot = await temporary(t);
   const output = path.join(temporaryRoot, "stage");
-  const result = await packageRelease(output, "v0.3.0");
-  assert.equal(result.version, "0.3.0");
+  const result = await packageRelease(output, "v0.3.1");
+  assert.equal(result.version, "0.3.1");
   for (const required of [
     "bootstrap.ps1",
     "bootstrap.sh",
@@ -59,13 +59,13 @@ test("release package contains the generator runtime but no examples, caches or 
   );
   assert.deepEqual(
     { name: metadata.name, version: metadata.version, format: metadata.format },
-    { name: "agent-ready-starter", version: "0.3.0", format: 1 },
+    { name: "agent-ready-starter", version: "0.3.1", format: 1 },
   );
   await assert.rejects(
     packageRelease(path.join(temporaryRoot, "wrong"), "v9.9.9"),
     /match package/,
   );
-  await assert.rejects(packageRelease(output, "v0.3.0"), /already exists/);
+  await assert.rejects(packageRelease(output, "v0.3.1"), /already exists/);
 });
 
 test("installer renderer pins repository, release, archive and checksum", async (t) => {
@@ -75,13 +75,13 @@ test("installer renderer pins repository, release, archive and checksum", async 
   const checksum = "a".repeat(64);
   const result = spawnSync(
     process.execPath,
-    [renderer, "owner/starter", "v0.3.0", checksum, output],
+    [renderer, "owner/starter", "v0.3.1", checksum, output],
     { encoding: "utf8", shell: false },
   );
   assert.equal(result.status, 0, result.stderr);
   const source = await readFile(output, "utf8");
   assert.match(source, /owner\/starter/);
-  assert.match(source, /agent-ready-starter-v0\.3\.0\.zip/);
+  assert.match(source, /agent-ready-starter-v0\.3\.1\.zip/);
   assert.match(source, new RegExp(checksum));
   assert.doesNotMatch(source, /__GITHUB_REPOSITORY__|__ARCHIVE_SHA256__/);
   assert.doesNotMatch(source, /Invoke-Expression|\biex\b/i);
@@ -94,7 +94,7 @@ test("packager excludes private environment files recursively", async (t) => {
   try {
     const result = await packageRelease(
       path.join(temporaryRoot, "stage"),
-      "v0.3.0",
+      "v0.3.1",
     );
     const names = await readdir(result.directory, { recursive: true });
     assert.ok(!names.some((name) => name.includes(".env.release-test")));

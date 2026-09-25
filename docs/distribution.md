@@ -52,6 +52,6 @@ La destinazione corrente deve essere vuota. L'installer non aggiorna da solo una
 
 ## Prova locale del pacchetto
 
-`npm run package:release -- --output PERCORSO_VUOTO --version v0.3.0` prepara i file senza pubblicarli. Il workflow è la fonte canonica per ZIP e installer finali. Le verifiche sono documentate in `docs/verification.md`.
+`npm run package:release -- --output PERCORSO_VUOTO --version v0.3.1` prepara i file senza pubblicarli. Il workflow è la fonte canonica per ZIP e installer finali. Le verifiche sono documentate in `docs/verification.md`.
 
 Fonti: [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository), [GitHub Release assets API](https://docs.github.com/en/rest/releases/assets).

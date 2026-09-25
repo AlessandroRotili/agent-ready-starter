@@ -1,6 +1,6 @@
 # Agent Ready Starter
 
-Wizard per creare applicazioni Next.js generiche, organizzate e pronte per agenti AI. Versione 0.3.0. Non impone un settore, un database o un servizio cloud.
+Wizard per creare applicazioni Next.js generiche, organizzate e pronte per agenti AI. Versione 0.3.1. Non impone un settore, un database o un servizio cloud.
 
 ## Crea un nuovo progetto su Windows
 

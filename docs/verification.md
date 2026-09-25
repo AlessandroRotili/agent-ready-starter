@@ -1,4 +1,4 @@
-# Verifica v0.3.0
+# Verifica v0.3.1
 
 ## Porta dinamica a ogni avvio Docker - 25 settembre 2026
 
