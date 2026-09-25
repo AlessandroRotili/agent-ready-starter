@@ -8,6 +8,7 @@ Il launcher prepara Node/npm; la CLI raccoglie risposte o flag, valida la destin
 - lib/scaffold.mjs: composizione comune/preset/provider, senza sovrascrivere file utente.
 - lib/dependencies.mjs: registry, versioni esatte, installazione tramite argv senza shell.
 - lib/docker.mjs: rilevamento CLI/Compose >=2.30/motore Linux con timeout; installazione in volumi tramite argv senza shell. Nessun avvio automatico del daemon.
+- L'avvio Docker di sviluppo usa gli script generati docker-start.ps1 / docker-start.sh, richiamati anche da run.ps1 dev / run.sh dev. A ogni avvio tentano Compose up dalla porta 3000 (o APP_PORT), incrementandola solo in caso di conflitto di bind; massimo 1000 tentativi e limite 65535. La porta viene acquisita da Docker durante l'avvio, senza probe anticipato ne valori salvati nel generatore. DOCKER_SITE_URL allinea NEXT_PUBLIC_SITE_URL alla porta effettiva senza modificare .env.local. Un'app gia attiva viene riutilizzata. Build e altri errori non vengono mascherati; la produzione usa configurazione esplicita.
 - La CLI ricontrolla il motore dopo il wizard; se l'installazione e rimandata, mostra la sequenza di ripresa completa (motore pronto, npm install nel container, avvio).
 - templates/base: fondazione Next/TypeScript/Tailwind, media, servizi, test e docs.
 - templates/presets: sole funzionalita associate alla scelta.

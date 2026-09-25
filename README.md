@@ -51,10 +51,10 @@ Se hai scelto **Node locale**, entra nella cartella del progetto e usa:
 Se hai scelto **Docker**, assicurati che Docker Desktop sia avviato con i container Linux, poi usa:
 
 ```powershell
-docker compose up app
+./docker-start.ps1
 ```
 
-Apri [http://localhost:3000](http://localhost:3000). Le istruzioni specifiche del progetto sono anche nei file `START-HERE.md` e, quando presente, `docs/docker.md` generati dal wizard.
+Con Node locale, apri l'indirizzo mostrato da Next.js, normalmente [http://localhost:3000](http://localhost:3000). Con Docker, il comando di avvio prova la porta 3000 e, se Docker la trova occupata, riprova 3001, 3002 e cosi via fino alla 3999. Lo fa a ogni avvio e stampa l'URL effettivo, aggiornando anche l'origine pubblica usata dall'app. Su macOS/Linux usa `bash docker-start.sh`; anche `run.ps1 dev` / `run.sh dev` selezionano il launcher Docker.
 
 ### Requisiti
 
@@ -131,7 +131,7 @@ Su Windows, nell'app generata:
 
 ## Docker opzionale
 
-Se la CLI segnala "installazione rimandata", il progetto e gia stato creato: non rilanciare lo scaffold nella cartella. Avvia Docker Desktop, attendi che `docker info` risponda, poi esegui `docker compose run --rm app npm install` e infine `docker compose up app`. La presenza del comando docker non implica che il motore sia pronto. La CLI ricontrolla il motore dopo le risposte al wizard.
+Se la CLI segnala "installazione rimandata", il progetto e gia stato creato: non rilanciare lo scaffold nella cartella. Avvia Docker Desktop, attendi che `docker info` risponda, poi esegui `docker compose run --rm app npm install` e infine `./docker-start.ps1`. La presenza del comando docker non implica che il motore sia pronto. La CLI ricontrolla il motore dopo le risposte al wizard.
 
 Esempio: `node bin/create.mjs ../mio-prodotto --yes --docker`. Vale anche con `--cwd` e da bootstrap.ps1/bootstrap.sh. Servono Docker con container Linux e Compose 2.30+. Il wizard verifica CLI, Compose e motore separatamente. Se il motore e spento, genera i file e rimanda l'installazione con istruzioni esplicite; non avvia Docker Desktop automaticamente. `--docker --no-install` permette di preparare un progetto per un'altra macchina anche senza Docker installato.
 
@@ -140,10 +140,14 @@ Nell'app generata:
 ```sh
 # Solo se l'installazione e stata rimandata:
 docker compose run --rm app npm install
-docker compose up app
+# Windows: ./docker-start.ps1
+# macOS/Linux:
+bash docker-start.sh
 ```
 
 Le dipendenze dell'app restano nei volumi Docker; il generatore usa comunque il suo Node/npm. L'app include Dockerfile multi-stage, Compose sviluppo/produzione, test browser opzionali e docs/docker.md. Produzione usa Next standalone e utente non privilegiato; file .env, toolchain e dipendenze host sono esclusi dal build context. Configurazione pubblica al build, segreti solo a runtime. Supabase/DB restano servizi da configurare separatamente.
+
+Il launcher decide la porta durante l'avvio effettivo, senza fissarla alla generazione e senza fermare altri servizi. `APP_PORT` nella shell indica la porta da cui iniziare la ricerca (massimo 1000 tentativi, fino a 65535). Se l'app e gia in esecuzione, mostra il suo URL. I comandi Compose diretti non fanno retry: usa il launcher di sviluppo. La produzione conserva porta e origine esplicite. I progetti gia creati non vengono aggiornati automaticamente.
 
 Docker rende l'ambiente trasferibile, ma immagini, volumi e Docker Desktop occupano spazio/RAM: nessuna promessa di risparmio automatico. Stop dei container quando inutilizzati; nessun prune globale automatico. Su un altro computer Windows basta rilanciare l'installer pubblico; il progetto generato e indipendente e puo essere trasferito con sorgenti/lockfile o come immagine di produzione.
 

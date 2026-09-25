@@ -73,7 +73,7 @@ try {
     );
   if (options.docker)
     console.log(
-      `Created ${result.directory}\nRead START-HERE.md and docs/docker.md.\n${options.install === false ? 'Dependencies not installed yet. Start Docker Desktop and wait until docker info succeeds.\nThen, in this project directory:\n  docker compose run --rm app npm install\n  docker compose up app' : 'Container dependencies installed.\nStart: docker compose up app'}`,
+      `Created ${result.directory}\nRead START-HERE.md and docs/docker.md.\n${options.install === false ? 'Dependencies not installed yet. Start Docker Desktop and wait until docker info succeeds.\nThen, in this project directory:\n  docker compose run --rm app npm install\n  ./docker-start.ps1 (Windows) or bash docker-start.sh (macOS/Linux)' : 'Container dependencies installed.\nStart: ./docker-start.ps1 (Windows) or bash docker-start.sh (macOS/Linux)'}`,
     );
   else
     console.log(

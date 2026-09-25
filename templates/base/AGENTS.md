@@ -28,4 +28,6 @@ Use docs/agents/HANDOFF.md for concise task packets; docs/tasks/TEMPLATE.md for 
 
 ## Completion
 
+For Docker development, use docker-start.ps1 / docker-start.sh (or run.ps1 dev / run.sh dev): these retry occupied host ports at startup and print the actual URL. Raw Compose up/start commands do not provide this fallback. See docs/docker.md when generated.
+
 Add meaningful unit tests for changed business rules and failures; use integration/access/browser checks for relevant risks. Follow docs/testing.md. Do not lower coverage or claim live-provider verification from mocks/PGlite. The integration owner runs npm run check once after code changes, plus relevant browser checks (Docker equivalents in docs/docker.md). Documentation-only work needs link/content review, not a full build. Update affected Markdown and report behavior, checks, required migrations and remaining setup. Read bounded source sections and summarize evidence; never sacrifice required validation to reduce context.

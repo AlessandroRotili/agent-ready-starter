@@ -10,12 +10,19 @@ From this app directory, if installation was skipped:
 
 ```sh
 docker compose run --rm app npm install
-docker compose up app
+# Windows PowerShell:
+./docker-start.ps1
+# macOS/Linux:
+bash ./docker-start.sh
 ```
 
-Open http://localhost:3000. Source changes are mounted live. Dependencies, npm cache and Next cache stay in project-scoped named volumes, not host node_modules. Commit the generated package-lock.json; on another machine initialize dependencies with `docker compose run --rm app npm ci`. After changing package.json, rerun install. Node/npm image upgrades need `docker compose build --pull app`, followed by npm ci. Browser tooling version is pinned in Dockerfile: update it together with @playwright/test.
+Open the URL printed by the launcher. At every start it builds the development image and asks Docker to publish port 3000; on a port conflict it retries 3001, 3002, and so on, up to 3999. It sets NEXT_PUBLIC_SITE_URL to the actual localhost origin for that launch, without rewriting .env.local. The container always listens on port 3000. If this project's app is already running, it prints that container's actual URL and leaves it running. `./run.ps1 dev` and `bash run.sh dev` also use this launcher when Docker was selected.
 
-Stop with Ctrl+C or `docker compose stop app`. Remove this project's stopped containers/network with `docker compose down`; named volumes remain for reuse. Docker images/volumes and Docker Desktop consume disk and RAM: portability does not guarantee lower usage. Inspect with `docker system df`; never run global prune or delete volumes automatically. On native Linux, development commands run as root inside the container and may create root-owned host files; configure ownership for your workstation before team use. Production runs as the unprivileged node user.
+Set APP_PORT in your shell to prefer another starting port; the launcher tries up to 1000 consecutive ports, stopping at 65535. Only port-binding conflicts are retried: build, daemon and configuration errors remain errors. Availability is decided by the actual Docker start, so a conflict after a previous run is handled on the next launch. Use the launcher for this behavior: raw `docker compose up app` and `docker compose start app` do not retry. The development launcher uses a localhost origin; for a custom domain use an explicit APP_PORT and DOCKER_SITE_URL with Compose. Production keeps an explicitly configured port and public origin (see below).
+
+Source changes are mounted live. Dependencies, npm cache and Next cache stay in project-scoped named volumes, not host node_modules. Commit the generated package-lock.json; on another machine initialize dependencies with `docker compose run --rm app npm ci`. After changing package.json, rerun install. Node/npm image upgrades need `docker compose build --pull app`, followed by npm ci. Browser tooling version is pinned in Dockerfile: update it together with @playwright/test.
+
+The launcher starts in the background. View logs with `docker compose logs -f app`; stop with `docker compose stop app`. Remove this project's stopped containers/network with `docker compose down`; named volumes remain for reuse. Docker images/volumes and Docker Desktop consume disk and RAM: portability does not guarantee lower usage. Inspect with `docker system df`; never run global prune or delete volumes automatically. On native Linux, development commands run as root inside the container and may create root-owned host files; configure ownership for your workstation before team use. Production runs as the unprivileged node user.
 
 ## Checks and media
 

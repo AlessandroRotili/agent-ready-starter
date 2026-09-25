@@ -5,7 +5,10 @@ import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { detectDocker, installDockerDependencies } from "../lib/docker.mjs";
+import {
+  detectDocker,
+  installDockerDependencies,
+} from "../lib/docker.mjs";
 import { collectAnswers } from "../lib/wizard.mjs";
 import { scaffold } from "../lib/scaffold.mjs";
 
@@ -53,6 +56,8 @@ test("CLI can generate in the current directory without Docker and explicitly de
   );
   assert.equal(metadata.runtime, "docker");
   assert.equal(metadata.installed, false);
+  assert.match(result.stdout, /docker-start.ps1/);
+  assert.equal(metadata.dockerPort, undefined);
   assert.ok(!(await readdir(root)).includes("node_modules"));
 });
 
@@ -136,6 +141,10 @@ test("Docker composition works with each preset and keeps private env outside bu
     });
     const read = (file) => readFile(path.join(directory, file), "utf8");
     assert.equal(JSON.parse(await read("starter.json")).runtime, "docker");
+    assert.match(await read("compose.yaml"), /APP_PORT:-3000/);
+    assert.match(await read("compose.yaml"), /DOCKER_SITE_URL/);
+    assert.match(await read("docker-start.ps1"), /Port .* unavailable/);
+    assert.match(await read("docker-start.sh"), /Port .* unavailable/);
     assert.match(await read("next.config.ts"), /output: "standalone"/);
     assert.match(await read("Dockerfile"), /USER node/);
     assert.doesNotMatch(

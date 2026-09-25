@@ -1,6 +1,12 @@
 param([Parameter(ValueFromRemainingArguments=$true)][string[]]$TaskArgs)
 $ErrorActionPreference = 'Stop'
 if (!$TaskArgs) { $TaskArgs = @('dev') }
+$dockerStart = Join-Path $PSScriptRoot 'docker-start.ps1'
+if ($TaskArgs[0] -eq 'dev' -and (Test-Path -LiteralPath $dockerStart)) {
+  if ($TaskArgs.Count -ne 1) { throw 'For Docker dev, set APP_PORT for a preferred starting port; extra dev arguments are not supported.' }
+  & $dockerStart
+  exit 0
+}
 $npmArgs = @('--prefix', $PSScriptRoot, 'run', $TaskArgs[0])
 $remaining = @($TaskArgs | Select-Object -Skip 1)
 if ($remaining.Count -gt 0 -and $remaining[0] -eq '--') { $remaining = @($remaining | Select-Object -Skip 1) }

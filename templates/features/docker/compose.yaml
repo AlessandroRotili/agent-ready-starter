@@ -6,6 +6,8 @@ services:
     init: true
     ports:
       - "127.0.0.1:${APP_PORT:-3000}:3000"
+    environment:
+      NEXT_PUBLIC_SITE_URL: ${DOCKER_SITE_URL:-http://localhost:3000}
     env_file:
       - path: .env.local
         required: false

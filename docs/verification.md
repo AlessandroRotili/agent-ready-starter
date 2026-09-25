@@ -1,5 +1,15 @@
 # Verifica v0.3.0
 
+## Porta dinamica a ogni avvio Docker - 25 settembre 2026
+
+La scelta della porta e ora nel launcher di sviluppo, non nella generazione. Windows con Node 26.10.0/npm 12.1.0 gestiti dal bootstrap: npm test completato, 25 test passati. I test del launcher esercitano lo stesso script con disponibilita diversa fra due avvii, conflitti Linux/Windows, porta iniziale preferita, esaurimento intervallo, input invalido, app gia attiva e fallimenti non legati alle porte (nessun retry). Verificati percorsi con spazi, chiamata da altra directory e ripristino dell'ambiente PowerShell. La stessa suite del launcher passa su Bash nel container Linux.
+
+Prova reale Windows/Docker Desktop Linux su una nuova app temporanea (starter-dynamic-start-UUxD3x/port-check), tramite run.ps1 dev: con listener host sulle porte 3000 e 3001, avvio sulla 3002. Fermata solo l'app di prova e occupata anche la 3002, lo stesso progetto riparte sulla 3003 senza rigenerare o modificare file. HTTP 200 e NEXT_PUBLIC_SITE_URL corretto in entrambi i casi; .env.local invariato. Un terzo avvio riutilizza il container gia attivo sulla 3003. Build del target development e validazione dei Compose sviluppo/produzione riuscite. Rimossi container/rete di prova e chiusi i listener; immagini/volumi conservati come cache.
+
+`npm run check:templates` completato con exit code 0 in Linux con Node 26.10.0/npm 12.1.0: installazione, typecheck, lint, coverage e build passati per landing locale (11 test), gestionale mock (13), sito generico (13) e sito Supabase (13 piu 5 test locali SQL/RLS/validazione). Artefatti nel volume `starter-dynamic-template-check`, directory `/work/agent-ready-verify-EZR8rZ`. Documentazione e diff verificati.
+
+Il launcher opera sull'avvio Docker effettivo, senza probe locale anticipato; la produzione mantiene porta e origine configurate esplicitamente. Nessun progetto esistente viene aggiornato e nessuna release viene pubblicata. Bash verificato in Linux con CLI simulata; avvio Docker reale verificato da PowerShell su Windows. macOS nativo, ARM64 e daemon remoti non verificati. Nessun servizio cloud collegato.
+
 ## Distribuzione standalone - 25 settembre 2026
 
 Packaging e installer GitHub predisposti e verificati localmente. `npm test`: 24 test passati, inclusi allowlist dell'archivio, esclusione ricorsiva di esempi/cache/test/env/artefatti legacy, corrispondenza versione e rendering dell'installer senza `Invoke-Expression`. Parser PowerShell: nessun errore.
