@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.vercel/
+.cache/
+coverage/
+.env*
+!.env.example
+*.tsbuildinfo
+next-env.d.ts
+*.log
+.toolchain.json
+.toolchain.sh
+playwright-report/
+test-results/

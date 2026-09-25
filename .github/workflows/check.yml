@@ -1,0 +1,54 @@
+name: Scaffold matrix
+on: [push, pull_request]
+jobs:
+  generator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+      - run: npm test
+  applications:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        preset: [landing, dashboard, fullsite]
+        provider: [none, mock, generic, supabase]
+        exclude:
+          - preset: dashboard
+            provider: none
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+      - run: npm install -g npm@latest
+      - run: node bin/create.mjs ../generated --yes --preset ${{ matrix.preset }} --provider ${{ matrix.provider }} --versions tested --no-browser
+      - run: npm run check
+        working-directory: ../generated
+      - run: npx playwright install --with-deps chromium
+        working-directory: ../generated
+      - run: npm run test:e2e
+        working-directory: ../generated
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+      - run: node bin/create.mjs ../docker-app --yes --docker --versions tested --no-browser
+      - run: docker compose config --quiet
+        working-directory: ../docker-app
+      - run: docker compose run --rm app npm run check
+        working-directory: ../docker-app
+      - run: docker compose run --build --rm browser
+        working-directory: ../docker-app
+      - run: docker compose --env-file .env.local -f compose.production.yaml up --build --wait web
+        working-directory: ../docker-app
+      - run: curl --fail http://localhost:3000
+      - if: always()
+        run: docker compose -f compose.production.yaml down && docker compose down
+        working-directory: ../docker-app

@@ -1,0 +1,264 @@
+:root {
+  color-scheme: light;
+  --ink: #172222;
+  --muted: #58676b;
+  --paper: #f5f7f6;
+  --line: #d8e1de;
+  --accent: #116653;
+  --radius: 16px;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  line-height: 1.55;
+}
+a {
+  color: var(--accent);
+  text-underline-offset: 4px;
+}
+button,
+input {
+  font: inherit;
+}
+button,
+.button {
+  border: 0;
+  border-radius: 9px;
+  background: var(--accent);
+  color: white;
+  padding: 0.75rem 1.15rem;
+  font-weight: 650;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+button:hover,
+.button:hover {
+  filter: brightness(0.93);
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+button.secondary,
+.button.secondary {
+  background: white;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+button.danger {
+  background: #fff1f1;
+  color: #9e2931;
+}
+:focus-visible {
+  outline: 3px solid #308cdb;
+  outline-offset: 4px;
+}
+.shell {
+  width: min(1120px, 100% - 40px);
+  margin-inline: auto;
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-block: 24px;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.brand {
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  font-size: 1.3rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+nav,
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+nav a {
+  font-size: 0.95rem;
+}
+.hero {
+  padding-block: clamp(64px, 12vw, 140px);
+  max-width: 830px;
+}
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 750;
+}
+h1 {
+  font-size: clamp(2.4rem, 6vw, 4.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+  margin: 20px 0;
+  text-wrap: balance;
+}
+h2 {
+  font-size: 1.4rem;
+  letter-spacing: -0.025em;
+  margin-top: 0;
+}
+p {
+  margin-top: 0;
+}
+.lead {
+  font-size: 1.2rem;
+  color: var(--muted);
+  max-width: 580px;
+  margin-bottom: 32px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 20px;
+}
+.card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(22px, 4vw, 36px);
+}
+.page {
+  padding-block: 48px 80px;
+}
+.page h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+.auth {
+  width: min(460px, 100% - 40px);
+  margin: 60px auto;
+}
+.auth h1 {
+  font-size: 2rem;
+}
+.stack {
+  display: grid;
+  gap: 20px;
+}
+label {
+  display: grid;
+  gap: 7px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+input {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: white;
+  color: var(--ink);
+}
+input[type="file"] {
+  font-size: 0.9rem;
+}
+.muted,
+small {
+  color: var(--muted);
+}
+.notice {
+  background: #e6f3ed;
+  border: 1px solid #b8dbca;
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+.error {
+  color: #8b2630;
+  background: #fff0f1;
+  border-color: #eec5ca;
+}
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+}
+.file-list li {
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.file-list li > div:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.file-list small {
+  display: block;
+}
+.spaced {
+  margin-block: 24px;
+}
+footer {
+  padding-block: 36px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -100px;
+  z-index: 99;
+  padding: 12px;
+  background: white;
+}
+.skip-link:focus {
+  top: 12px;
+}
+@media (max-width: 600px) {
+  .file-list li {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .topbar {
+    gap: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+.ambient-media {
+  position: relative;
+  overflow: hidden;
+}
+.ambient-media video,
+.ambient-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.media-toggle {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}

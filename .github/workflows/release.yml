@@ -1,0 +1,41 @@
+name: Release standalone installer
+on:
+  push:
+    tags: ["v*.*.*"]
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+      - name: Verify tag and generator
+        shell: bash
+        run: |
+          package_version="$(node -p "require('./package.json').version")"
+          test "v$package_version" = "$GITHUB_REF_NAME"
+          npm test
+      - name: Build minimal release archive
+        shell: bash
+        run: |
+          node scripts/package-release.mjs --output dist/stage --version "$GITHUB_REF_NAME"
+          cd dist/stage
+          zip -q -r "../agent-ready-starter-$GITHUB_REF_NAME.zip" "agent-ready-starter-${GITHUB_REF_NAME#v}"
+          cd ..
+          sha256sum "agent-ready-starter-$GITHUB_REF_NAME.zip" > "agent-ready-starter-$GITHUB_REF_NAME.zip.sha256"
+          checksum="$(cut -d ' ' -f 1 "agent-ready-starter-$GITHUB_REF_NAME.zip.sha256")"
+          node ../scripts/render-installer.mjs "$GITHUB_REPOSITORY" "$GITHUB_REF_NAME" "$checksum" install-agent-ready.ps1
+      - name: Publish immutable assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create "$GITHUB_REF_NAME"
+          "dist/agent-ready-starter-$GITHUB_REF_NAME.zip"
+          "dist/agent-ready-starter-$GITHUB_REF_NAME.zip.sha256"
+          "dist/install-agent-ready.ps1"
+          --verify-tag
+          --generate-notes
+          --title "Agent Ready Starter $GITHUB_REF_NAME"

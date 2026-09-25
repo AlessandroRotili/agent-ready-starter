@@ -1,0 +1,1 @@
+Read and follow the repository root AGENTS.md, PROJECT.md and docs/architecture.md before changing this application. Keep instructions and architecture decisions in those shared files. Run npm run check and update relevant documentation before completing code changes.

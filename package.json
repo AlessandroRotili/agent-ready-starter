@@ -1,0 +1,19 @@
+{
+  "name": "agent-ready-starter",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "bin": {
+    "create-agent-app": "bin/create.mjs"
+  },
+  "scripts": {
+    "create": "node bin/create.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "package:release": "node scripts/package-release.mjs",
+    "check:templates": "node scripts/verify-presets.mjs",
+    "check:legacy": "npm --prefix template run check"
+  }
+}

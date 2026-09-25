@@ -1,0 +1,36 @@
+services:
+  app:
+    build:
+      context: .
+      target: development
+    init: true
+    ports:
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
+    env_file:
+      - path: .env.local
+        required: false
+        format: raw
+    volumes:
+      - .:/app
+      - dependencies:/app/node_modules
+      - next-dev:/app/.next
+      - npm-cache:/root/.npm
+    command: ["npm", "run", "dev", "--", "--hostname", "0.0.0.0"]
+  browser:
+    profiles: [test]
+    build:
+      context: .
+      target: browser
+    init: true
+    shm_size: 1gb
+    # Next loads .env.local from the mounted source: use a dedicated test project.
+    volumes:
+      - .:/app
+      - dependencies:/app/node_modules
+      - next-test:/app/.next
+    command: ["npm", "run", "test:e2e"]
+volumes:
+  dependencies:
+  next-dev:
+  next-test:
+  npm-cache:
