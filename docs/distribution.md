@@ -10,22 +10,20 @@ Pubblica `agent-ready-starter` come repository GitHub pubblico. La repository co
 
 L'archivio include bootstrap, CLI, moduli, template e documentazione. Esclude esempi, test/manutenzione, `.runtime`, dipendenze, cache, output, `.env` privati, lockfile e file generati del template legacy. La pubblicazione è gestita da `.github/workflows/release.yml`. GitHub consente il download non autenticato degli asset di una release pubblica; una repository privata richiede un diverso flusso autenticato e non è supportata da questo installer.
 
-## Prima pubblicazione
+## Pubblicare una nuova versione
 
-La cartella dello starter è già una repository Git locale sul branch `main`, senza commit e senza remote. Dopo avere creato o autenticato il tuo account GitHub:
+La repository pubblica e `AlessandroRotili/agent-ready-starter`. Dopo avere aggiornato versione, changelog e test:
 
 ```powershell
-cd C:\Users\alessandro.rotili\wildwingsband\agent-ready-starter
-git branch -M main
+cd C:\percorso\agent-ready-starter
 git add .
-git commit -m "Initial agent-ready starter"
-gh auth login
-gh repo create agent-ready-starter --public --source . --remote origin --push
-git tag v0.3.0
-git push origin v0.3.0
+git commit -m "chore: release vX.Y.Z"
+git push origin main
+git tag vX.Y.Z
+git push origin vX.Y.Z
 ```
 
-Il push del tag esegue i test, controlla che il tag coincida con `package.json`, costruisce l'archivio, genera il checksum, inserisce repository/versione/hash nell'installer e pubblica la Release. Non creare il tag finché il workflow normale non è verde. Se il nome scelto per la repository cambia, non devi modificare lo script: il workflow usa automaticamente `owner/repository` del progetto GitHub.
+Sostituisci `X.Y.Z` con la stessa versione presente in `package.json`. Il push del tag esegue i test, costruisce l'archivio, genera il checksum, inserisce repository/versione/hash nell'installer e pubblica la Release. Non creare il tag finché il workflow normale non è verde. Se il nome scelto per la repository cambia, non devi modificare lo script: il workflow usa automaticamente `owner/repository` del progetto GitHub.
 
 Prima del commit è stato eseguito un controllo locale per chiavi private, token GitHub/OpenAI, password e segreti Supabase/Brevo/Cron: non sono emerse credenziali. `template/.env.example` contiene soltanto valori vuoti e localhost. `.runtime`, `node_modules`, `.next`, file TypeScript generati e `dist` sono ignorati. Controlla comunque sempre `git status --short --ignored` prima di ogni primo push.
 
@@ -37,12 +35,12 @@ Scarica il singolo installer dalla release più recente, ispezionalo e avvialo d
 
 ```powershell
 $installer = Join-Path $env:TEMP 'install-agent-ready.ps1'
-Invoke-WebRequest 'https://github.com/OWNER/agent-ready-starter/releases/latest/download/install-agent-ready.ps1' -OutFile $installer
+Invoke-WebRequest 'https://github.com/AlessandroRotili/agent-ready-starter/releases/latest/download/install-agent-ready.ps1' -OutFile $installer
 Get-Content $installer -TotalCount 30
 & $installer
 ```
 
-Sostituisci `OWNER` una sola volta con l'account GitHub. Il wizard chiede se creare il progetto nella cartella corrente o altrove. Non servono `git clone`, Node o npm: l'installer scarica il runtime verificato in `%LOCALAPPDATA%\AgentReadyStarter\versions`, poi il bootstrap prepara Node/npm nella cache di quella versione. I progetti generati rimangono indipendenti.
+Il wizard chiede se creare il progetto nella cartella corrente o altrove. Non servono `git clone`, Node o npm: l'installer scarica il runtime verificato in `%LOCALAPPDATA%\AgentReadyStarter\versions`, poi il bootstrap prepara Node/npm nella cache di quella versione. I progetti generati rimangono indipendenti.
 
 Al secondo avvio puoi riusare lo stesso file: archivio e toolchain vengono riutilizzati. Gli argomenti della CLI possono essere inoltrati, per esempio:
 

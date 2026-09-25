@@ -2,31 +2,31 @@
 
 Wizard per creare applicazioni Next.js generiche, organizzate e pronte per agenti AI. Versione 0.3.0. Non impone un settore, un database o un servizio cloud.
 
-## Installer singolo da GitHub
+## Crea un nuovo progetto su Windows
 
-Per usare lo scaffold su altri computer senza copiare questa cartella, pubblica lo starter in una repository GitHub pubblica e crea il tag della versione. Il workflow di release produce un `install-agent-ready.ps1` autonomo e un archivio minimale verificato: nessun clone e nessuna cartella di esempio.
+Non devi clonare questa repository e non servono Node, npm o Git gia installati. Apri **PowerShell** nella cartella da cui vuoi iniziare e incolla:
 
 ```powershell
 $installer = Join-Path $env:TEMP 'install-agent-ready.ps1'
-Invoke-WebRequest 'https://github.com/OWNER/agent-ready-starter/releases/latest/download/install-agent-ready.ps1' -OutFile $installer
+Invoke-WebRequest 'https://github.com/AlessandroRotili/agent-ready-starter/releases/latest/download/install-agent-ready.ps1' -OutFile $installer
 & $installer
 ```
 
-L'installer usa una cache versionata in `%LOCALAPPDATA%\AgentReadyStarter`, prepara Node/npm senza cambiare le installazioni di sistema e apre lo stesso wizard. I comandi una tantum per pubblicare la prima release e il modello di aggiornamento sono in [docs/distribution.md](docs/distribution.md).
-
-## Avvio da qualunque cartella
-
-Windows, anche senza Node/npm installati:
+Se Windows blocca l'esecuzione dello script per la execution policy, usa questo ultimo comando al posto di `& $installer`:
 
 ```powershell
-& "C:\Users\alessandro.rotili\wildwingsband\agent-ready-starter\bootstrap.ps1"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File $installer
 ```
 
-macOS/Linux:
+Da **Prompt dei comandi (CMD)** puoi avviare lo stesso installer con un solo comando:
 
-```sh
-bash /percorso/agent-ready-starter/bootstrap.sh
+```bat
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$p=Join-Path $env:TEMP 'install-agent-ready.ps1'; Invoke-WebRequest 'https://github.com/AlessandroRotili/agent-ready-starter/releases/latest/download/install-agent-ready.ps1' -OutFile $p; & $p"
 ```
+
+L'installer scarica la release pubblica piu recente, ne verifica il checksum e apre il wizard. Durante il primo avvio prepara una copia privata di Node/npm in `%LOCALAPPDATA%\AgentReadyStarter`; non modifica le installazioni di sistema.
+
+### Cosa scegliere nel wizard
 
 Il wizard chiede:
 
@@ -38,7 +38,45 @@ Il wizard chiede:
 6. **Node locale / Docker**, quando CLI e Compose compatibile sono disponibili.
 7. Installazione automatica delle dipendenze nell'ambiente scelto.
 
-La cartella corrente e quella da cui lanci il comando, non quella dello script. La destinazione deve essere vuota o non esistere; file preesistenti non vengono sovrascritti. Per generare nella cartella corrente, avvia il launcher da una cartella vuota esterna allo starter. `--name` permette un nome npm valido anche quando il percorso contiene spazi o maiuscole.
+La cartella corrente e quella da cui lanci il comando, non la cartella temporanea dell'installer. Se scegli **Cartella corrente**, questa deve essere vuota. In alternativa, il wizard crea il progetto nel percorso che indichi. File preesistenti non vengono sovrascritti.
+
+### Avvia il progetto generato
+
+Se hai scelto **Node locale**, entra nella cartella del progetto e usa:
+
+```powershell
+.\run.ps1 dev
+```
+
+Se hai scelto **Docker**, assicurati che Docker Desktop sia avviato con i container Linux, poi usa:
+
+```powershell
+docker compose up app
+```
+
+Apri [http://localhost:3000](http://localhost:3000). Le istruzioni specifiche del progetto sono anche nei file `START-HERE.md` e, quando presente, `docs/docker.md` generati dal wizard.
+
+### Requisiti
+
+- Windows con PowerShell e accesso a Internet.
+- Docker Desktop e opzionale e serve solo se scegli Docker nel wizard.
+- Git, Node e npm non sono richiesti per eseguire l'installer.
+
+## Uso dai sorgenti
+
+Questa modalita serve a chi clona la repository per sviluppare o modificare il generatore. Su Windows:
+
+```powershell
+.\bootstrap.ps1
+```
+
+Su macOS/Linux:
+
+```sh
+bash ./bootstrap.sh
+```
+
+L'installer pubblico per Windows usa una cache versionata e non esegue `git clone`. I dettagli di pubblicazione e aggiornamento delle release sono in [docs/distribution.md](docs/distribution.md).
 
 ## Automazione
 
@@ -107,7 +145,7 @@ docker compose up app
 
 Le dipendenze dell'app restano nei volumi Docker; il generatore usa comunque il suo Node/npm. L'app include Dockerfile multi-stage, Compose sviluppo/produzione, test browser opzionali e docs/docker.md. Produzione usa Next standalone e utente non privilegiato; file .env, toolchain e dipendenze host sono esclusi dal build context. Configurazione pubblica al build, segreti solo a runtime. Supabase/DB restano servizi da configurare separatamente.
 
-Docker rende l'ambiente trasferibile, ma immagini, volumi e Docker Desktop occupano spazio/RAM: nessuna promessa di risparmio automatico. Stop dei container quando inutilizzati; nessun prune globale automatico. Per trasferire il generatore serve ancora l'intera cartella starter, non solo il .ps1. Il progetto generato e indipendente e puo essere trasferito con sorgenti/lockfile o come immagine di produzione.
+Docker rende l'ambiente trasferibile, ma immagini, volumi e Docker Desktop occupano spazio/RAM: nessuna promessa di risparmio automatico. Stop dei container quando inutilizzati; nessun prune globale automatico. Su un altro computer Windows basta rilanciare l'installer pubblico; il progetto generato e indipendente e puo essere trasferito con sorgenti/lockfile o come immagine di produzione.
 
 ## Agenti e contesto
 
