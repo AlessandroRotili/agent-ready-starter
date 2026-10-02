@@ -23,8 +23,12 @@ Read PROJECT.md and starter.json once to identify the product and selected capab
 | Coordinating multiple areas/agents | docs/agents/orchestrator.md |
 | Implementing a task | docs/agents/agent.md |
 | Bounded delegated task | docs/agents/subagent.md |
+| Agent selection or Codex configuration | docs/agents/README.md |
+| Review or completion evidence | docs/agents/verification-protocol.md |
 
 Use docs/agents/HANDOFF.md for concise task packets; docs/tasks/TEMPLATE.md for product acceptance criteria. Roles describe responsibilities, not mandatory separate processes. Small tasks stay with one agent; workers do not recursively delegate.
+
+In compatible Codex clients, `.codex/agents/` defines native architect, implementer, reviewer and security specialists. The main session coordinates and owns integration; Markdown remains the shared protocol for every editor. See docs/agents/README.md for availability and fallback.
 
 ## Completion
 

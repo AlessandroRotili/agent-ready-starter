@@ -4,6 +4,8 @@ Read README.md for scope and docs/architecture.md when changing composition. Rea
 
 Load one relevant role guide: [orchestrator](docs/agents/orchestrator.md) for coordination, [agent](docs/agents/agent.md) for implementation, [subagent](docs/agents/subagent.md) for a bounded delegated task. Use [handoff](docs/agents/HANDOFF.md) instead of duplicated transcripts. Delegation is optional; use one agent for small tasks and avoid nested delegation.
 
+See [agent structure](docs/agents/README.md) for role selection and Codex setup. Markdown defines shared procedures; `.codex/agents/` defines native `architect`, `implementer`, `reviewer` and `security` specialists in compatible clients. The main session remains the integration owner. Use the [verification protocol](docs/agents/verification-protocol.md) for reviews and completion; native delegation is optional.
+
 - Common source: templates/base. Presets: templates/presets. Providers: templates/providers. Docker: templates/features/docker and lib/docker.mjs. The legacy template/ supplies a whitelisted optional Supabase account module only.
 - Distribution uses an allowlisted release archive and a checksum-pinned PowerShell installer. For packaging/release changes read docs/distribution.md; never include examples, caches, credentials or local toolchains.
 - Keep presets generic. No customer/band assets, secrets, credentials, production identifiers, backups, .git or .vercel links.

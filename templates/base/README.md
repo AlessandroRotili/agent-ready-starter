@@ -34,8 +34,15 @@ scripts/                 Environment checks and media preparation
 tests/unit/              Unit and component tests
 tests/e2e/               Browser flows, desktop and mobile
 docs/                    Architecture, setup, tests and decisions
+.codex/agents/           Native Codex architect, implementer, reviewer and security
 ```
 
 Supabase projects with an account area additionally include `lib/auth`, `lib/db`, `app/account`, `app/admin`, `app/api`, migrations and database integration tests. Landing pages do not receive the account module.
 
 Read [AGENTS.md](AGENTS.md), fill [PROJECT.md](PROJECT.md), and use [docs/tasks/TEMPLATE.md](docs/tasks/TEMPLATE.md) when implementing a feature. `starter.json` records choices and dependency versions. Applications are independent source copies; updates are reviewed explicitly.
+
+## Agents
+
+AGENTS.md contains shared rules; [docs/agents/README.md](docs/agents/README.md) maps procedures and role selection; `.codex/agents/*.toml` defines four native specialists in compatible Codex clients. The main session coordinates and owns final verification. Small tasks use one agent; larger changes can use architecture analysis, bounded implementation and review of a stable diff. Architecture/review roles are read-only; the implementer inherits session permissions. Model and reasoning settings remain inherited, and no project config.toml or external service is required.
+
+Claude/Copilot use the same Markdown guides. If native delegation is unavailable, follow the protocol sequentially. Use [HANDOFF.md](docs/agents/HANDOFF.md) for assignments and findings, and the [verification protocol](docs/agents/verification-protocol.md) for completion evidence.

@@ -52,6 +52,8 @@ La destinazione corrente deve essere vuota. L'installer non aggiorna da solo una
 
 ## Prova locale del pacchetto
 
+La struttura agenti include i quattro file TOML di manutenzione in `.codex/agents/` tramite percorsi espliciti nella allowlist. Non viene inclusa l'intera `.codex` del manutentore: config personale, autenticazione e sessioni restano esclusi. Anche nei template la composizione e il packaging consentono solo `.codex/agents/{architect,implementer,reviewer,security}.toml`, tramite lib/agent-files.mjs. Le procedure comuni sono in docs/agents; nessun token, MCP o percorso personale appartiene alle definizioni.
+
 `npm run package:release -- --output PERCORSO_VUOTO --version v0.3.1` prepara i file senza pubblicarli. Il workflow è la fonte canonica per ZIP e installer finali. Le verifiche sono documentate in `docs/verification.md`.
 
 Fonti: [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository), [GitHub Release assets API](https://docs.github.com/en/rest/releases/assets).

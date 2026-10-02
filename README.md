@@ -153,9 +153,11 @@ Docker rende l'ambiente trasferibile, ma immagini, volumi e Docker Desktop occup
 
 ## Agenti e contesto
 
-AGENTS.md e il punto d'ingresso: regole critiche sempre visibili, tabella dei documenti da caricare secondo il task. Le guide in docs/agents distinguono orchestratore, agente implementatore e subagente specialista. Un task semplice resta con un solo agente; deleghe circoscritte, proprieta dei file, nessuna ricorsione automatica e risultati sintetici. L'orchestratore integra e verifica una sola volta lo stato finale; i worker eseguono controlli mirati. I test necessari restano obbligatori.
+La struttura ha tre livelli: **AGENTS.md** per regole e documenti da caricare secondo il task, **docs/agents/** per procedure condivise, **.codex/agents/*.toml** per i ruoli nativi Codex. Il repository e ogni nuova app includono `architect`, `implementer`, `reviewer` e `security`. Architettura e revisioni sono in sola lettura; l'implementatore eredita i permessi della sessione. Modello, reasoning e connessioni restano nella configurazione dell'utente. Non serve aggiungere un config.toml al progetto.
 
-Le istruzioni sono applicate anche alle app generate. CLAUDE.md e Copilot rinviano alla guida comune. Il modello HANDOFF.md evita di copiare intere conversazioni e documenti. Questo riduce il contesto superfluo; il consumo effettivo dipende dall'agente e dal lavoro richiesto.
+La sessione principale coordina, integra e possiede la verifica finale. Un task semplice resta con un solo agente; deleghe circoscritte, proprieta dei file e nessuna ricorsione automatica. Per cambiamenti ampi: analisi quando necessaria, implementazione, revisione del diff stabile e risoluzione dei rilievi. Reviewer e security possono lavorare in parallelo quando entrambi servono. I worker eseguono controlli mirati; i test necessari restano obbligatori. Dettagli in [docs/agents/README.md](docs/agents/README.md) e [protocollo di verifica](docs/agents/verification-protocol.md).
+
+I file Markdown non creano subagenti automaticamente. I TOML richiedono un client Codex compatibile e le impostazioni della sessione possono limitare la delega; in assenza di supporto si seguono le stesse procedure in un solo agente. CLAUDE.md e Copilot rinviano alla guida comune. HANDOFF.md contiene incarico, proprieta, stato del diff, risultati e rilievi senza copiare intere conversazioni. Le app esistenti non vengono aggiornate automaticamente.
 
 ## Test e accortezze incluse
 

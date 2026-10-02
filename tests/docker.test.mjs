@@ -160,8 +160,10 @@ test("Docker composition works with each preset and keeps private env outside bu
           : "NEXT_PUBLIC_SITE_URL=",
       ),
     );
-    for (const role of ["orchestrator", "agent", "subagent", "HANDOFF"])
+    for (const role of ["orchestrator", "agent", "subagent", "HANDOFF", "README", "verification-protocol"])
       assert.ok((await read(`docs/agents/${role}.md`)).length);
+    for (const role of ["architect", "implementer", "reviewer", "security"])
+      assert.ok((await read(`.codex/agents/${role}.toml`)).length);
   }
   const local = path.join(root, "local");
   await scaffold(local, { docker: false, versions: "tested" });

@@ -49,6 +49,12 @@ test("generates independent landing, dependency manifest, safe branding and agen
     "README.md",
     ".env.example",
     "docs/architecture.md",
+    "docs/agents/README.md",
+    "docs/agents/verification-protocol.md",
+    ".codex/agents/architect.toml",
+    ".codex/agents/implementer.toml",
+    ".codex/agents/reviewer.toml",
+    ".codex/agents/security.toml",
     "starter.json",
   ]) {
     assert.ok((await stat(path.join(target, required))).isFile());
@@ -60,6 +66,8 @@ test("generates independent landing, dependency manifest, safe branding and agen
     ".git",
     ".vercel",
     "next-env.d.ts",
+    ".codex/config.toml",
+    ".codex/auth.json",
     "tsconfig.tsbuildinfo",
   ]) {
     await assert.rejects(stat(path.join(target, excluded)), { code: "ENOENT" });

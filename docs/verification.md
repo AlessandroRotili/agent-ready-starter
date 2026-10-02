@@ -1,4 +1,14 @@
-# Verifica v0.3.1
+# Verifiche dello scaffold
+
+## Struttura agenti ibrida - 2 ottobre 2026 (Unreleased)
+
+Windows con Node 26.10.0/npm 12.1.0 gestiti da `.runtime/toolchain.json`. `npm test`: 26 test passati. Verificati i quattro ruoli nel progetto generato e nel pacchetto release, la risoluzione dei riferimenti alle guide e l'esclusione di stato Codex personale/definizioni non dichiarate, anche quando presenti nei template. I test di composizione controllano i ruoli anche nei quattro preset/provider rappresentativi con Docker.
+
+Otto definizioni TOML analizzate con `tomllib` di Python 3.13: sintassi, nomi, campi previsti, sandbox read-only per architect/reviewer/security e riferimenti validi. `starter.json` e verificato nell'app generata, poiche viene composto dalla CLI. Revisione di contenuto e 38 link locali nelle guide/README; `git diff --check` passato.
+
+`npm run check:templates`: completato con exit code 0 su Windows. Installazione, typecheck, lint, coverage e build passati per landing locale (11 test), gestionale mock (13), sito generico (13) e sito Supabase (13 piu 5 test locali SQL/RLS/validazione). App temporanee conservate in `%TEMP%/agent-ready-verify-fFQqJf`. Chromium installato dal verificatore; nessun nuovo test browser richiesto o eseguito per questa modifica alla struttura agenti, senza cambiamenti UI. Le prove SQL sono locali e non attestano Auth/SMTP/Storage ospitati.
+
+Revisione eseguita dalla sessione principale, senza deleghe. Queste prove verificano file, composizione e applicazioni; non attestano il caricamento o l'esecuzione dei ruoli nativi in uno specifico client/account Codex. Formato verificato sulla [documentazione ufficiale OpenAI](https://learn.chatgpt.com/docs/agent-configuration/subagents). Nessun servizio cloud collegato, nessuna release pubblicata e nessuna app esistente modificata.
 
 ## Porta dinamica a ogni avvio Docker - 25 settembre 2026
 

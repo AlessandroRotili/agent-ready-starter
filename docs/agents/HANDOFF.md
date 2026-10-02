@@ -6,6 +6,8 @@ Use only when delegation or session handoff helps. Do not create a bureaucracy f
 
 - Outcome and acceptance criteria:
 - Mode: implementation / read-only review / investigation
+- Specialist (if delegated) and integration owner:
+- Source state: branch/commit or current working-tree diff being assessed:
 - Owner and writable files:
 - Relevant source and canonical docs (paths, not copied contents):
 - Contract, constraints and explicitly excluded scope:
@@ -15,6 +17,7 @@ Use only when delegation or session handoff helps. Do not create a bureaucracy f
 ## Return
 
 - Conclusion / behavior changed:
+- Review findings: severity, location, impact and reproduction (or no actionable findings):
 - Files changed or findings with locations:
 - Checks actually run, results and any skipped checks with reasons:
 - Decisions and unresolved risks:

@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased - 2026-10-02
+
+Struttura agenti ibrida nel generatore e nelle nuove app: AGENTS.md come ingresso, protocolli condivisi in docs/agents e ruoli Codex nativi architect/implementer/reviewer/security in .codex/agents. Architettura e revisioni in sola lettura, modelli e permessi di implementazione ereditati; delega opzionale e coordinamento nella sessione principale. Aggiunti scelta dei ruoli, protocollo di verifica e handoff con stato del diff e rilievi. Configurazione del manutentore distribuita tramite quattro percorsi espliciti, senza includere stato personale Codex. App esistenti e versione pubblicata restano invariate; evidenze in docs/verification.md.
+
 ## 0.3.1 - 2026-09-25
 
 Gli script generati docker-start.ps1 / docker-start.sh (anche tramite run.ps1 dev / run.sh dev) cercano una porta disponibile a ogni avvio Docker di sviluppo, riprovando soltanto gli errori di bind. Partono da 3000 o APP_PORT e provano fino a 1000 porte; mostrano l'URL effettivo e allineano l'origine pubblica runtime. Nessuna porta viene fissata durante la generazione. L'app gia attiva viene riutilizzata e gli altri errori restano visibili. Produzione con porta/origine esplicite.

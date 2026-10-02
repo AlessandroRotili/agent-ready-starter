@@ -7,6 +7,7 @@ import {
   writeFile,
 } from "node:fs/promises";
 import path from "node:path";
+import { codexAgentRoles, isPortableAgentPath } from "../lib/agent-files.mjs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const repository = fileURLToPath(new URL("../", import.meta.url));
@@ -17,6 +18,7 @@ const rootFiles = [
   "bootstrap.ps1",
   "bootstrap.sh",
   "package.json",
+  ...codexAgentRoles.map((role) => `.codex/agents/${role}.toml`),
 ];
 const rootDirectories = ["bin", "docs", "lib", "template", "templates"];
 const excludedDirectories = new Set([
@@ -55,7 +57,10 @@ async function copyTree(source, destination) {
   await mkdir(destination, { recursive: true });
   let files = 0;
   for (const entry of await readdir(source, { withFileTypes: true })) {
-    if (excluded(entry.name)) continue;
+    if (
+      excluded(entry.name) ||
+      !isPortableAgentPath(path.relative(repository, path.join(source, entry.name)))
+    ) continue;
     files += await copyTree(
       path.join(source, entry.name),
       path.join(destination, entry.name),
